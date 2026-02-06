@@ -1,1 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HHS Call Navigator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .step-inactive { opacity: 0.5; pointer-events: none; }
+        .step-active { opacity: 1; border-left: 4px solid #7c3aed; }
+        .glow { box-shadow: 0 0 15px rgba(124, 58, 237, 0.3); }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen font-sans">
 
+    <!-- Header / Stats -->
+    <header class="bg-slate-800 p-4 border-b border-slate-700 sticky top-0 z-50">
+        <div class="max-w-4xl mx-auto flex justify-between items-center">
+            <div>
+                <h1 class="text-xl font-bold text-purple-400 leading-none">HHS Navigator</h1>
+                <p class="text-xs text-slate-400 mt-1 uppercase tracking-widest">Target: 1 Transfer / Shift</p>
+            </div>
+            <div id="tracker" class="flex gap-2">
+                <button onclick="logTransfer()" class="bg-purple-600 hover:bg-purple-500 text-white px-4 py-2 rounded-lg text-sm font-semibold transition-all active:scale-95">
+                    Transfer Secured 🎯
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto p-4 pb-24">
+        
+        <!-- Workflow Container -->
+        <div id="workflow" class="space-y-6">
+            
+            <!-- STEP 1 -->
+            <section id="step-1" class="bg-slate-800 p-6 rounded-xl border border-slate-700 step-active glow">
+                <div class="flex items-start gap-4">
+                    <span class="bg-purple-600 text-white w-8 h-8 rounded-full flex items-center justify-center font-bold flex-shrink-0">1</span>
+                    <div class="flex-1">
+                        <h2 class="text-lg font-bold mb-2">The Entry Point (OTP Phase)</h2>
+                        <p class="text-slate-400 text-sm mb-4">Validate the customer and plant the seed immediately.</p>
+                        <div class="bg-slate-900 p-4 rounded-lg border-l-4 border-purple-500 italic text-slate-200">
+                            "While that PIN is coming through, can I just check—who is your mobile provider at the moment?"
+                        </div>
+                        <div class="mt-4 flex gap-2">
+                            <button onclick="nextStep(1)" class="bg-slate-700 hover:bg-slate-600 px-3 py-1 rounded text-xs">Provider Noted</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- STEP 2 -->
+            <section id="step-2" class="bg-slate-800 p-6 rounded-xl border border-slate-700 step-inactive">
+                <div class="flex items-start gap-4">
+                    <span class="bg-purple-600 text-white w-8 h-8 rounded-full flex items-center justify-center font-bold flex-shrink-0">2</span>
+                    <div class="flex-1">
+                        <h2 class="text-lg font-bold mb-2">Household Discovery</h2>
+                        <p class="text-slate-400 text-sm mb-4">Identify who uses the broadband and how.</p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
+                            <div class="bg-slate-900 p-3 rounded border border-slate-700 text-sm">
+                                <p class="text-purple-400 font-bold text-xs uppercase mb-1">Who?</p>
+                                "Who else uses the broadband at home? Is it just yourself or the whole family?"
+                            </div>
+                            <div class="bg-slate-900 p-3 rounded border border-slate-700 text-sm">
+                                <p class="text-purple-400 font-bold text-xs uppercase mb-1">What?</p>
+                                "What do you mainly use the Wi-Fi for? Streaming, gaming, or working from home?"
+                            </div>
+                        </div>
+                        <button onclick="nextStep(2)" class="bg-slate-700 hover:bg-slate-600 px-3 py-1 rounded text-xs">Household Mapped</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- STEP 3 -->
+            <section id="step-3" class="bg-slate-800 p-6 rounded-xl border border-slate-700 step-inactive">
+                <div class="flex items-start gap-4">
+                    <span class="bg-purple-600 text-white w-8 h-8 rounded-full flex items-center justify-center font-bold flex-shrink-0">3</span>
+                    <div class="flex-1">
+                        <h2 class="text-lg font-bold mb-2">Promote Benefits</h2>
+                        <p class="text-slate-400 text-sm mb-4">Introduce the ecosystem before the transfer.</p>
+                        <div class="bg-slate-900 p-4 rounded-lg border-l-4 border-purple-500 mb-4">
+                            <p class="text-sm italic">"Have you downloaded the EE app? You can self-serve and see all the loyalty benefits you get—like Airtime Rewards and 5G SIM options."</p>
+                        </div>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="bg-slate-700 text-[10px] px-2 py-1 rounded">EE ID</span>
+                            <span class="bg-slate-700 text-[10px] px-2 py-1 rounded">Airtime Rewards</span>
+                            <span class="bg-slate-700 text-[10px] px-2 py-1 rounded">5G SIM</span>
+                            <span class="bg-slate-700 text-[10px] px-2 py-1 rounded">App Setup</span>
+                        </div>
+                        <button onclick="nextStep(3)" class="bg-slate-700 hover:bg-slate-600 px-3 py-1 rounded text-xs">Value Established</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- STEP 4 -->
+            <section id="step-4" class="bg-slate-800 p-6 rounded-xl border border-slate-700 step-inactive">
+                <div class="flex items-start gap-4">
+                    <span class="bg-purple-600 text-white w-8 h-8 rounded-full flex items-center justify-center font-bold flex-shrink-0">4</span>
+                    <div class="flex-1">
+                        <h2 class="text-lg font-bold mb-2">The Soft Transfer</h2>
+                        <p class="text-slate-400 text-sm mb-4">Link it back and let them choose.</p>
+                        <div class="bg-purple-900/30 p-4 rounded-lg border border-purple-500/50 mb-4">
+                            <p class="text-sm italic">"Since you mentioned there are [X] mobiles in the house, you could save a significant amount by bringing them over to EE. I’ll get you through to one of our specialists to see the best deal."</p>
+                            <p class="mt-2 text-red-400 text-[10px] uppercase font-bold tracking-tighter">STOP: Wait for response. Do not decide for them.</p>
+                        </div>
+                        <button onclick="resetFlow()" class="text-xs text-slate-500 hover:text-slate-300 underline">Reset Workflow</button>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Objection Handlers -->
+        <div class="mt-12">
+            <h3 class="text-sm font-bold text-slate-500 uppercase mb-4 tracking-widest text-center">In Case of Emergency (Objections)</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="bg-slate-800 p-4 rounded-lg border border-red-900/30">
+                    <p class="text-xs font-bold text-red-400 mb-1">"I'm too busy right now"</p>
+                    <p class="text-sm">"I completely get that. This is just a 2-minute chat to show you how much you'd save—it could take a chunk off your monthly bill."</p>
+                </div>
+                <div class="bg-slate-800 p-4 rounded-lg border border-red-900/30">
+                    <p class="text-xs font-bold text-red-400 mb-1">"I'm happy with O2/Vodafone"</p>
+                    <p class="text-sm">"They're great, but as an EE Broadband customer, you get loyalty benefits with us that you literally can't get elsewhere. Worth a quick look?"</p>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        let currentStep = 1;
+        let transferCount = 0;
+
+        function nextStep(step) {
+            if (step < 4) {
+                document.getElementById(`step-${step}`).classList.remove('step-active', 'glow');
+                document.getElementById(`step-${step}`).classList.add('step-inactive');
+                
+                currentStep = step + 1;
+                const next = document.getElementById(`step-${currentStep}`);
+                next.classList.remove('step-inactive');
+                next.classList.add('step-active', 'glow');
+                next.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
+
+        function resetFlow() {
+            for (let i = 1; i <= 4; i++) {
+                const s = document.getElementById(`step-${i}`);
+                s.classList.add('step-inactive');
+                s.classList.remove('step-active', 'glow');
+            }
+            const first = document.getElementById('step-1');
+            first.classList.remove('step-inactive');
+            first.classList.add('step-active', 'glow');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function logTransfer() {
+            transferCount++;
+            const tracker = document.getElementById('tracker');
+            const toast = document.createElement('div');
+            toast.className = "fixed bottom-8 left-1/2 -translate-x-1/2 bg-green-600 text-white px-6 py-3 rounded-full font-bold shadow-2xl animate-bounce";
+            toast.innerText = "Daily Target Met! 🎯";
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+            
+            // Celebration effect
+            document.getElementById('tracker').innerHTML = `
+                <span class="text-green-400 font-bold flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                      <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                    </svg>
+                    Job Done
+                </span>
+            `;
+        }
+    </script>
+</body>
+</html>
