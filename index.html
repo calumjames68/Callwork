@@ -30,12 +30,9 @@
             </div>
             
             <div class="flex items-center gap-4">
-                <div class="text-right">
-                    <p class="text-[10px] text-slate-500 uppercase font-bold">Manager Target</p>
-                    <div class="flex gap-1 mt-1">
-                        <span class="px-2 py-0.5 rounded bg-purple-900/50 text-purple-300 text-[10px] border border-purple-700">Pushing 50%+</span>
-                    </div>
-                </div>
+                <button onclick="resetFlow()" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 px-4 py-2 rounded-xl transition-all border border-slate-700">
+                    Reset Call 🔄
+                </button>
                 <button onclick="logTransfer()" class="bg-purple-600 hover:bg-purple-500 text-white px-5 py-2 rounded-xl text-sm font-bold transition-all shadow-lg shadow-purple-900/20 active:scale-95">
                     Log Transfer 🎯
                 </button>
@@ -64,75 +61,115 @@
                     <div class="bg-purple-600/20 text-purple-400 w-10 h-10 rounded-xl flex items-center justify-center font-black flex-shrink-0 border border-purple-500/20">1</div>
                     <div class="flex-1">
                         <div class="flex justify-between items-center mb-1">
-                            <h2 class="text-lg font-bold">Start of Call: The OTP Pivot</h2>
-                            <span class="text-[10px] bg-slate-800 px-2 py-0.5 rounded text-slate-400 uppercase font-bold tracking-tighter">MANDATORY</span>
+                            <h2 class="text-lg font-bold">The PIN Pivot</h2>
+                            <span class="text-[10px] bg-slate-800 px-2 py-0.5 rounded text-slate-400 uppercase font-bold tracking-tighter">Validation Phase</span>
                         </div>
-                        <p class="text-slate-400 text-xs mb-4">Park the provider info early while sending the PIN.</p>
+                        <p class="text-slate-400 text-xs mb-4">Identify the mobile provider early. Note if they mention BT.</p>
                         <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 italic text-slate-200 text-sm leading-relaxed relative">
                             <span class="absolute -top-2 left-4 bg-slate-900 px-2 text-[10px] font-bold text-purple-500">OTP SCRIPT</span>
                             "While that PIN is coming through... <span class="text-purple-400 font-bold">By the way, who is your mobile provider at the moment?</span>"
                         </div>
-                        <div class="mt-4 flex items-center gap-3">
-                            <input type="text" id="provider-input" placeholder="Note provider here..." class="bg-slate-950 border border-slate-800 rounded-lg px-3 py-1.5 text-xs focus:outline-none focus:border-purple-500 transition-all">
-                            <button onclick="nextStep(1)" class="bg-slate-800 hover:bg-slate-700 px-4 py-1.5 rounded-lg text-xs font-bold transition-colors">Move to Resolution</button>
+                        <div class="mt-4 flex flex-wrap items-center gap-3">
+                            <input type="text" id="provider-input" placeholder="e.g. O2, BT, Sky..." class="bg-slate-950 border border-slate-800 rounded-lg px-3 py-1.5 text-xs focus:outline-none focus:border-purple-500 transition-all">
+                            <div class="flex items-center gap-2">
+                                <input type="checkbox" id="is-bt" class="w-4 h-4 rounded bg-slate-800 border-slate-700 text-purple-600">
+                                <label for="is-bt" class="text-[10px] text-slate-400 font-bold uppercase">Customer with BT</label>
+                            </div>
+                            <button onclick="nextStep(1)" class="bg-slate-800 hover:bg-slate-700 px-4 py-1.5 rounded-lg text-xs font-bold transition-colors">Start Discovery</button>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <!-- STEP 2: DURING CALL -->
+            <!-- STEP 2: HOUSEHOLD DISCOVERY -->
             <section id="step-2" class="bg-slate-900 p-5 rounded-2xl border border-slate-800 step-inactive transition-all duration-300">
                 <div class="flex items-start gap-4">
                     <div class="bg-purple-600/20 text-purple-400 w-10 h-10 rounded-xl flex items-center justify-center font-black flex-shrink-0 border border-purple-500/20">2</div>
                     <div class="flex-1">
-                        <h2 class="text-lg font-bold mb-1">During Call: Resolve & Listen</h2>
-                        <p class="text-slate-400 text-xs mb-4 text-green-500 font-bold uppercase tracking-wider">✅ Fix the customer's problem first!</p>
+                        <h2 class="text-lg font-bold mb-1">Household Discovery</h2>
+                        <p class="text-slate-400 text-xs mb-4">Lead with open questions about their home setup.</p>
                         
-                        <p class="text-xs text-slate-500 mb-3 uppercase font-black">Select the scenario identified:</p>
-                        <div class="grid grid-cols-2 md:grid-cols-3 gap-2 mb-4">
-                            <button onclick="selectScenario('not-ee', this)" class="scenario-btn bg-slate-950 border border-slate-800 p-2 rounded-xl text-[10px] text-left hover:border-purple-500 transition-all">Not with New EE</button>
-                            <button onclick="selectScenario('signal', this)" class="scenario-btn bg-slate-950 border border-slate-800 p-2 rounded-xl text-[10px] text-left hover:border-purple-500 transition-all">Signal Issues</button>
-                            <button onclick="selectScenario('no-data', this)" class="scenario-btn bg-slate-950 border border-slate-800 p-2 rounded-xl text-[10px] text-left hover:border-purple-500 transition-all">No/Limited Data</button>
-                            <button onclick="selectScenario('already-ee', this)" class="scenario-btn bg-slate-950 border border-slate-800 p-2 rounded-xl text-[10px] text-left hover:border-purple-500 transition-all">Family EE Check</button>
-                            <button onclick="selectScenario('wfh', this)" class="scenario-btn bg-slate-950 border border-slate-800 p-2 rounded-xl text-[10px] text-left hover:border-purple-500 transition-all">WFH Struggles</button>
-                            <button onclick="selectScenario('generic', this)" class="scenario-btn bg-slate-950 border border-slate-800 p-2 rounded-xl text-[10px] text-left hover:border-purple-500 transition-all">General Offer</button>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
+                            <div class="bg-slate-950 p-3 rounded-xl border border-slate-800">
+                                <p class="text-[10px] text-purple-500 font-black uppercase mb-1">Who?</p>
+                                <p class="text-sm italic">"Who mainly uses the broadband at home? Is it just you or the whole family?"</p>
+                            </div>
+                            <div class="bg-slate-950 p-3 rounded-xl border border-slate-800">
+                                <p class="text-[10px] text-purple-500 font-black uppercase mb-1">What?</p>
+                                <p class="text-sm italic">"What are you mainly using the Wi-Fi for? Streaming, gaming, or working from home?"</p>
+                            </div>
                         </div>
                         
-                        <button onclick="nextStep(2)" id="move-to-offer" class="bg-slate-800 hover:bg-slate-700 px-4 py-1.5 rounded-lg text-xs font-bold transition-colors opacity-50 pointer-events-none">Problem Resolved? Move to Offer</button>
+                        <div class="flex items-center gap-3 bg-slate-950 p-3 rounded-xl border border-slate-800 mb-4">
+                             <input type="number" id="mobile-count" placeholder="0" class="w-12 bg-slate-900 border border-slate-700 rounded p-1 text-xs text-center">
+                             <span class="text-xs text-slate-400">Total mobiles in household? (Target for transfer)</span>
+                        </div>
+                        
+                        <button onclick="nextStep(2)" class="bg-slate-800 hover:bg-slate-700 px-4 py-1.5 rounded-lg text-xs font-bold transition-colors">Usage Mapped</button>
                     </div>
                 </div>
             </section>
 
-            <!-- STEP 3: END OF CALL -->
+            <!-- STEP 3: UNDERSTANDING SERVICES -->
             <section id="step-3" class="bg-slate-900 p-5 rounded-2xl border border-slate-800 step-inactive transition-all duration-300">
                 <div class="flex items-start gap-4">
                     <div class="bg-purple-600/20 text-purple-400 w-10 h-10 rounded-xl flex items-center justify-center font-black flex-shrink-0 border border-purple-500/20">3</div>
                     <div class="flex-1">
-                        <h2 class="text-lg font-bold mb-1">End of Call: Tailored Offer</h2>
-                        <p class="text-slate-400 text-xs mb-4">Use the specific script for the scenario you picked.</p>
+                        <h2 class="text-lg font-bold mb-1">Service Deep-Dive</h2>
+                        <p class="text-slate-400 text-xs mb-2">Identify the "pain point" while resolving the technical query.</p>
                         
-                        <div class="bg-purple-900/10 p-5 rounded-2xl border border-purple-900/40 mb-4 shadow-inner relative">
-                            <span class="absolute -top-2 left-4 bg-slate-900 px-2 text-[10px] font-bold text-green-400 uppercase">TAILORED SCRIPT</span>
-                            <p id="final-script" class="text-sm italic text-purple-100 leading-relaxed">Please select a scenario in Step 2 first...</p>
-                        </div>
-
-                        <div class="flex items-center gap-2 mb-4 bg-slate-950 p-3 rounded-xl border border-slate-800">
-                            <span class="text-xs font-bold text-slate-400">Key Selling Point:</span>
-                            <span class="bg-green-600 text-white px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-tighter">Unlimited from £12/mo</span>
+                        <div class="space-y-2 mb-4">
+                            <p class="text-[10px] text-slate-500 uppercase font-black tracking-widest">Listen/Ask for:</p>
+                            <div class="grid grid-cols-2 gap-2">
+                                <button onclick="selectScenario('wfh', this)" class="scenario-btn bg-slate-950 border border-slate-800 p-2 rounded-lg text-[10px] text-left hover:border-purple-500">Difficult WFH</button>
+                                <button onclick="selectScenario('signal', this)" class="scenario-btn bg-slate-950 border border-slate-800 p-2 rounded-lg text-[10px] text-left hover:border-purple-500">Poor Signal/Connection</button>
+                                <button onclick="selectScenario('no-data', this)" class="scenario-btn bg-slate-950 border border-slate-800 p-2 rounded-lg text-[10px] text-left hover:border-purple-500">Limited/No Data</button>
+                                <button onclick="selectScenario('not-ee', this)" class="scenario-btn bg-slate-950 border border-slate-800 p-2 rounded-lg text-[10px] text-left hover:border-purple-500">Not with New EE</button>
+                                <button onclick="selectScenario('already-ee', this)" class="scenario-btn bg-slate-950 border border-slate-800 p-2 rounded-lg text-[10px] text-left hover:border-purple-500">Already with EE (Family)</button>
+                                <button onclick="selectScenario('generic', this)" class="scenario-btn bg-slate-950 border border-slate-800 p-2 rounded-lg text-[10px] text-left hover:border-purple-500">General/No Pain Point</button>
+                            </div>
                         </div>
                         
-                        <button onclick="nextStep(3)" class="bg-slate-800 hover:bg-slate-700 px-4 py-1.5 rounded-lg text-xs font-bold transition-colors">Interest Shown? Move to Transfer</button>
+                        <div class="bg-green-900/10 p-3 rounded-xl border border-green-500/20 mb-4">
+                            <p class="text-[10px] text-green-500 font-black uppercase mb-1">Manager Note</p>
+                            <p class="text-[11px] text-slate-300">Resolve the primary issue first, then link back to these details.</p>
+                        </div>
+                        
+                        <button onclick="nextStep(3)" id="move-to-offer" class="bg-slate-800 hover:bg-slate-700 px-4 py-1.5 rounded-lg text-xs font-bold transition-colors opacity-50 pointer-events-none">Problem Resolved? Go to Offer</button>
                     </div>
                 </div>
             </section>
 
-            <!-- STEP 4: INTEREST SHOWN -->
+            <!-- STEP 4: TAILORED OFFER -->
             <section id="step-4" class="bg-slate-900 p-5 rounded-2xl border border-slate-800 step-inactive transition-all duration-300">
                 <div class="flex items-start gap-4">
                     <div class="bg-purple-600/20 text-purple-400 w-10 h-10 rounded-xl flex items-center justify-center font-black flex-shrink-0 border border-purple-500/20">4</div>
                     <div class="flex-1">
-                        <h2 class="text-lg font-bold mb-1">Interest Shown: Transfer</h2>
-                        <p class="text-slate-400 text-xs mb-4">Don't sell—just pass to the expert.</p>
+                        <h2 class="text-lg font-bold mb-1">End of Call: Tailored Script</h2>
+                        <p class="text-slate-400 text-xs mb-4">Link back to the details from Step 2 & 3.</p>
+                        
+                        <div class="bg-purple-900/10 p-5 rounded-2xl border border-purple-900/40 mb-4 shadow-inner relative">
+                            <span class="absolute -top-2 left-4 bg-slate-900 px-2 text-[10px] font-bold text-green-400 uppercase">OFFER SCRIPT</span>
+                            <p id="final-script" class="text-sm italic text-purple-100 leading-relaxed">Select a scenario in Step 3...</p>
+                        </div>
+
+                        <div id="bt-migration-alert" class="hidden bg-blue-900/20 p-3 rounded-xl border border-blue-500/30 mb-4">
+                             <p class="text-[10px] text-blue-400 font-black uppercase">BT Loyalty Bonus</p>
+                             <p class="text-[11px] text-slate-300 italic">"Because you're moving your broadband over from BT to the New EE, you unlock this exclusive £12 rate."</p>
+                        </div>
+                        
+                        <button onclick="nextStep(4)" class="bg-slate-800 hover:bg-slate-700 px-4 py-1.5 rounded-lg text-xs font-bold transition-colors">Interest? Secure Transfer</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- STEP 5: TRANSFER -->
+            <section id="step-5" class="bg-slate-900 p-5 rounded-2xl border border-slate-800 step-inactive transition-all duration-300">
+                <div class="flex items-start gap-4">
+                    <div class="bg-purple-600/20 text-purple-400 w-10 h-10 rounded-xl flex items-center justify-center font-black flex-shrink-0 border border-purple-500/20">5</div>
+                    <div class="flex-1">
+                        <h2 class="text-lg font-bold mb-1">Transfer & Pause</h2>
+                        <p class="text-slate-400 text-xs mb-4">Don't decide for them. Use the silent pause.</p>
                         
                         <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 italic text-slate-200 text-sm leading-relaxed mb-4">
                             "If this is something you’re interested in, I’ll get you through to an expert who can go into a bit more detail. Please bear with me for a couple of minutes."
@@ -150,9 +187,8 @@
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
                                 </svg>
-                                Copy HHS Example
+                                Log HHS Success
                             </button>
-                            <button onclick="resetFlow()" class="text-xs text-slate-500 hover:text-slate-300 underline">Reset Workflow</button>
                         </div>
                     </div>
                 </div>
@@ -187,7 +223,19 @@
             selectedScenarioKey = key;
             document.querySelectorAll('.scenario-btn').forEach(b => b.classList.remove('scenario-btn-active'));
             btn.classList.add('scenario-btn-active');
-            document.getElementById('final-script').innerText = scripts[key];
+            
+            let scriptText = scripts[key];
+            const isBT = document.getElementById('is-bt').checked;
+            
+            // If they are with BT, modify the script slightly to mention the move
+            if (isBT && key !== 'already-ee') {
+                scriptText = scriptText.replace("moving across to New EE", "moving your broadband over from BT to the New EE");
+                document.getElementById('bt-migration-alert').classList.remove('hidden');
+            } else {
+                document.getElementById('bt-migration-alert').classList.add('hidden');
+            }
+            
+            document.getElementById('final-script').innerText = scriptText;
             document.getElementById('move-to-offer').classList.remove('opacity-50', 'pointer-events-none');
             document.getElementById('move-to-offer').classList.add('bg-purple-600', 'text-white');
         }
@@ -216,7 +264,7 @@
         }
 
         function nextStep(step) {
-            if (step < 4) {
+            if (step < 5) {
                 document.getElementById(`step-${step}`).classList.remove('step-active', 'glow');
                 document.getElementById(`step-${step}`).classList.add('step-inactive');
                 
@@ -226,7 +274,7 @@
                 next.classList.add('step-active', 'glow');
                 next.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
-                if (currentStep === 4) {
+                if (currentStep === 5) {
                     startPauseTimer();
                 }
             }
@@ -250,11 +298,16 @@
             clearInterval(timerInterval);
             document.getElementById('pause-timer').style.width = '0%';
             selectedScenarioKey = '';
-            document.getElementById('final-script').innerText = "Please select a scenario in Step 2 first...";
+            document.getElementById('final-script').innerText = "Select a scenario in Step 3...";
             document.getElementById('move-to-offer').classList.add('opacity-50', 'pointer-events-none');
+            document.getElementById('move-to-offer').classList.remove('bg-purple-600', 'text-white');
             document.querySelectorAll('.scenario-btn').forEach(b => b.classList.remove('scenario-btn-active'));
+            document.getElementById('provider-input').value = '';
+            document.getElementById('mobile-count').value = '';
+            document.getElementById('is-bt').checked = false;
+            document.getElementById('bt-migration-alert').classList.add('hidden');
             
-            for (let i = 1; i <= 4; i++) {
+            for (let i = 1; i <= 5; i++) {
                 const s = document.getElementById(`step-${i}`);
                 s.classList.add('step-inactive');
                 s.classList.remove('step-active', 'glow');
@@ -274,9 +327,10 @@
         }
 
         function copyExample() {
-            const provider = document.getElementById('provider-input').value || "O2";
+            const provider = document.getElementById('provider-input').value || "Unknown";
             const scriptUsed = scripts[selectedScenarioKey] || "General Offer";
-            const exampleText = `HHS Recommendation Example:\n1. Provider (OTP Phase): ${provider}\n2. Scenario Identified: ${selectedScenarioKey}\n3. Manager Script Used: ${scriptUsed}\n4. Result: Customer interest shown and transferred to specialist.`;
+            const mobiles = document.getElementById('mobile-count').value || "1";
+            const exampleText = `HHS Recommendation Example:\n1. Provider (OTP Phase): ${provider}\n2. Household Discovery: ${mobiles} mobiles in home.\n3. Scenario Identified: ${selectedScenarioKey}\n4. Script Used: ${scriptUsed}\n5. Result: Specialist transfer secured.`;
             
             const el = document.createElement('textarea');
             el.value = exampleText;
@@ -286,8 +340,8 @@
             document.body.removeChild(el);
             
             const btn = event.currentTarget;
-            btn.innerText = "COPIED!";
-            setTimeout(() => btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" /></svg> Copy HHS Example', 2000);
+            btn.innerText = "EXAMPLE COPIED!";
+            setTimeout(() => btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" /></svg> Log HHS Success', 2000);
         }
     </script>
 </body>
